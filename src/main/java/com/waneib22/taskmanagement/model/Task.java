@@ -20,6 +20,7 @@ public class Task {
     private boolean completed;
 
     public Task(Long id,
+                String title,
                 String description,
                 LocalDate dueDate,
                 boolean completed) {
