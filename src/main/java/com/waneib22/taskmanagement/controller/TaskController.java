@@ -1,8 +1,8 @@
 package com.waneib22.taskmanagement.controller;
 
 import com.waneib22.taskmanagement.model.Task;
+import com.waneib22.taskmanagement.model.UserInfo;
 import com.waneib22.taskmanagement.service.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +15,21 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    @Autowired
     public TaskController(TaskService taskService){
         this.taskService = taskService;
     }
 
+    @GetMapping("/welcome")
+    public String welcome() {
+        return "Welcome to the application ";
+    }
 
-    @GetMapping()
+    @PostMapping("/new")
+    public UserInfo addNewUser(@RequestBody UserInfo userInfo) {
+        return taskService.addUser(userInfo);
+    }
+
+    @GetMapping("/all")
     public List<Task> getAllTasks() {
         return taskService.getAllTasks();
     }
@@ -31,20 +39,21 @@ public class TaskController {
         return taskService.getTaskById(id);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
         Task createdTask = taskService.createTask(task);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public void updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {
         taskService.updateTask(id, updatedTask);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
     }
+
 }

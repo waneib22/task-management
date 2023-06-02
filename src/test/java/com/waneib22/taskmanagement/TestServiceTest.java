@@ -3,6 +3,7 @@ package com.waneib22.taskmanagement;
 import com.waneib22.taskmanagement.exception.TaskNotFounded;
 import com.waneib22.taskmanagement.model.Task;
 import com.waneib22.taskmanagement.repository.TaskRepository;
+import com.waneib22.taskmanagement.repository.UserInfoRepository;
 import com.waneib22.taskmanagement.service.TaskService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -17,12 +19,18 @@ public class TestServiceTest {
 
     @Mock
     private TaskRepository taskRepository;
+    @Mock
+    private UserInfoRepository userInfoRepository;
+    @Mock
+    private PasswordEncoder passwordEncoder;
     private TaskService taskService;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        taskService = new TaskService(taskRepository);
+        taskService = new TaskService(taskRepository,
+                userInfoRepository,
+                passwordEncoder);
     }
 
     @Test
