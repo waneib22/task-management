@@ -1,41 +1,34 @@
 package com.waneib22.taskmanagement.controller;
 
 import com.waneib22.taskmanagement.model.Task;
-import com.waneib22.taskmanagement.model.UserInfo;
 import com.waneib22.taskmanagement.service.TaskService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/tasks")
+@RequiredArgsConstructor
+@RequestMapping("api/v1/tasks")
 public class TaskController {
 
     private final TaskService taskService;
 
-    public TaskController(TaskService taskService){
-        this.taskService = taskService;
-    }
-
     @GetMapping("/welcome")
     public String welcome() {
-        return "Welcome to the application ";
+        return " *** Welcome to our Task web application ***";
     }
 
-    @PostMapping("/new")
-    public UserInfo addNewUser(@RequestBody UserInfo userInfo) {
-        return taskService.addUser(userInfo);
-    }
-
-    @GetMapping("/all")
+    @GetMapping("/get/all")
     public List<Task> getAllTasks() {
         return taskService.getAllTasks();
     }
 
-    @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable Long id) {
+    @GetMapping("/get/{id}")
+    public Task getTaskById(@PathVariable Integer id) {
         return taskService.getTaskById(id);
     }
 
@@ -47,13 +40,14 @@ public class TaskController {
     }
 
     @PutMapping("/update/{id}")
-    public void updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {
-        taskService.updateTask(id, updatedTask);
+    public Task updateTask(@PathVariable Integer id,
+                           @RequestBody Task updatedTask) {
+        return taskService.updateTask(id, updatedTask);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteTask(@PathVariable Long id) {
-        taskService.deleteTask(id);
+    public void deleteTask(@PathVariable Integer id) {
+        taskService.deleteTaskById(id);
     }
 
 }

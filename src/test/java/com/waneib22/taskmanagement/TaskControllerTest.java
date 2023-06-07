@@ -30,13 +30,13 @@ public class TaskControllerTest {
     @Test
     public void testGetAllTasks_ReturnsListOfTasks() {
         // Arrange
-        Task task1 = new Task(1L,
+        Task task1 = new Task(1,
                 "Task 1",
-                "Descrition 1",
+                "Description 1",
                 null, false);
-        Task task2 = new Task(2L,
+        Task task2 = new Task(2,
                 "Task 2",
-                "Descrition 2",
+                "Description 2",
                 null, true);
         List<Task> tasks = Arrays.asList(task1, task2);
         Mockito.when(taskService.getAllTasks()).thenReturn(tasks);
@@ -56,7 +56,7 @@ public class TaskControllerTest {
     @Test
     public void testCreate_ValidTask_ReturnsCreatedStatus() {
         // Arrange
-        Task task = new Task(1L,
+        Task task = new Task(1,
                 "Task 1",
                 "Description 1",
                 null, false);

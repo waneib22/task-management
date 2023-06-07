@@ -3,7 +3,6 @@ package com.waneib22.taskmanagement;
 import com.waneib22.taskmanagement.exception.TaskNotFounded;
 import com.waneib22.taskmanagement.model.Task;
 import com.waneib22.taskmanagement.repository.TaskRepository;
-import com.waneib22.taskmanagement.repository.UserInfoRepository;
 import com.waneib22.taskmanagement.service.TaskService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,24 +18,18 @@ public class TestServiceTest {
 
     @Mock
     private TaskRepository taskRepository;
-    @Mock
-    private UserInfoRepository userInfoRepository;
-    @Mock
-    private PasswordEncoder passwordEncoder;
     private TaskService taskService;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        taskService = new TaskService(taskRepository,
-                userInfoRepository,
-                passwordEncoder);
+        taskService = new TaskService(taskRepository);
     }
 
     @Test
     public void testGetTaskById_ExistingId_ReturnsTask() {
         // Arrange
-        Long taskId = 1L;
+        Integer taskId = 1;
         Task task = new Task(taskId, "Task 1",
                 "Description 1", null,
                 false);
@@ -61,7 +54,7 @@ public class TestServiceTest {
     @Test
     public void testGetTaskById_NonExistingId_ThrowsException() {
         // Arrange
-        Long taskId = 1L;
+        Integer taskId = 1;
         Mockito.when(taskRepository.findById(taskId))
                 .thenReturn(Optional.empty());
 

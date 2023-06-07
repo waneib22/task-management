@@ -1,32 +1,39 @@
-package com.waneib22.taskmanagement.config;
+package com.waneib22.taskmanagement.security.user;
 
-import com.waneib22.taskmanagement.model.UserInfo;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class UserInfoUserDetails implements UserDetails {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
+@Table(name = "_user")
+public class User implements UserDetails {
 
-    private String username;
+    @Id
+    @GeneratedValue
+    private Integer id;
+    private String firstName;
+    private String lastName;
+    @Column(unique = true)
+    private String email;
     private String password;
-    private List<GrantedAuthority> authorities;
-
-    public UserInfoUserDetails(UserInfo userInfo) {
-        username = userInfo.getUsername();
-        password = userInfo.getPassword();
-        authorities = Arrays.stream(userInfo.getRoles().split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-    }
+    @Enumerated(EnumType.STRING)
+    private Role roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return List.of(new SimpleGrantedAuthority(roles.name()));
     }
 
     @Override
@@ -36,7 +43,7 @@ public class UserInfoUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
